@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sitio Clearance Ticket Service — Barangay Lapasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & TOKENS ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --paper:#F1EFE6;
+  --paper-raised:#FBFAF4;
+  --paper-deep:#E7E3D5;
+  --ink:#242419;
+  --ink-soft:#615F4F;
+  --ink-faint:#96937C;
+  --line:#DAD5C2;
+  --line-strong:#C3BC9F;
+
+  --green:#3F5B44;
+  --green-deep:#2B4130;
+  --green-tint:#E4EAE1;
+
+  --ochre:#B07C24;
+  --ochre-tint:#F3E7CC;
+
+  --rust:#A8442E;
+  --rust-tint:#F1DFD8;
+
+  --slate:#3E5468;
+  --slate-tint:#DEE5EA;
+
+  --teal:#3B6C64;
+  --teal-tint:#DFEAE6;
+
+  --radius-sm:6px;
+  --radius:12px;
+  --radius-lg:18px;
+
+  --shadow-sm:0 1px 2px rgba(36,36,25,.06);
+  --shadow-md:0 10px 24px -14px rgba(36,36,25,.35);
+  --shadow-lg:0 24px 48px -20px rgba(36,36,25,.4);
+
+  --font-display:'Fraunces',serif;
+  --font-body:'Public Sans',-apple-system,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html,body{height:100%;}
+body{
+  font-family:var(--font-body);
+  background:var(--paper);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+button{font-family:inherit;cursor:pointer;}
+input,select,textarea{font-family:inherit;font-size:inherit;color:inherit;}
+a{color:inherit;}
+::selection{background:var(--green);color:var(--paper-raised);}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:10px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+
+.hidden{display:none !important;}
+.eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;}
+.mono{font-family:var(--font-mono);}
+
+.seal{width:44px;height:44px;flex-shrink:0;}
+.seal circle{fill:none;stroke:currentColor;}
+.seal-mono{color:var(--green);}
+
+/* ============ LOGIN SCREEN ============ */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 20px;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(63,91,68,.07), transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(168,68,46,.06), transparent 40%),
+    var(--paper);
+}
+.login-card{
+  width:100%;max-width:960px;background:var(--paper-raised);border:1px solid var(--line);
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden;
+}
+.login-brand{
+  background:repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 2px, transparent 2px 22px),
+    linear-gradient(160deg, var(--green-deep), var(--green) 70%);
+  color:var(--paper-raised);padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between;position:relative;
+}
+.login-brand .seal-mono{color:var(--paper-raised);opacity:.92;}
+.brand-top{display:flex;align-items:center;gap:14px;}
+.brand-name{font-family:var(--font-display);font-size:15px;letter-spacing:.02em;line-height:1.3;opacity:.95;}
+.brand-name b{display:block;font-size:17px;}
+.login-headline{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,3.6vw,38px);line-height:1.12;margin-top:36px;}
+.login-headline em{font-style:italic;font-weight:500;opacity:.88;}
+.login-sub{margin-top:14px;font-size:14.5px;max-width:36ch;opacity:.82;}
+.brand-stats{display:flex;gap:26px;margin-top:40px;}
+.brand-stat b{display:block;font-family:var(--font-display);font-size:22px;}
+.brand-stat span{font-size:11.5px;opacity:.78;text-transform:uppercase;letter-spacing:.08em;}
+
+.login-form-side{padding:44px 40px;display:flex;flex-direction:column;}
+.login-form-side h2{font-family:var(--font-display);font-size:22px;font-weight:600;}
+.login-form-side .lede{color:var(--ink-soft);font-size:13.5px;margin-top:6px;margin-bottom:22px;}
+
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;}
+.demo-card{
+  text-align:left;border:1px solid var(--line);background:var(--paper);border-radius:var(--radius-sm);padding:11px 12px;
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+.demo-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--line-strong);background:var(--paper-raised);}
+.demo-card.active{border-color:var(--green);background:var(--green-tint);box-shadow:0 0 0 1px var(--green) inset;}
+.demo-card .role-tag{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--green);font-weight:700;}
+.demo-card .role-name{font-weight:700;font-size:13.5px;margin-top:3px;}
+.demo-card .role-meta{font-size:11.5px;color:var(--ink-soft);margin-top:1px;}
+
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;}
+.field input{
+  width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--paper);
+  font-size:14px;transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.field input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-tint);background:var(--paper-raised);}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--radius-sm);
+  font-weight:700;font-size:13.5px;padding:12px 18px;
+  transition:transform .12s ease, box-shadow .18s ease, background .15s ease, opacity .15s ease;position:relative;overflow:hidden;
+}
+.btn:active{transform:translateY(1px);}
+.btn-primary{background:var(--ink);color:var(--paper-raised);}
+.btn-primary:hover{box-shadow:var(--shadow-md);}
+.btn-primary::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);transform:translateX(-120%);transition:transform .5s ease;}
+.btn-primary:hover::after{transform:translateX(120%);}
+.btn-block{width:100%;}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink);}
+.btn-ghost:hover{background:var(--paper);border-color:var(--line-strong);}
+.btn-danger-ghost{background:transparent;border:1px solid var(--rust);color:var(--rust);}
+.btn-danger-ghost:hover{background:var(--rust-tint);}
+.btn-sm{padding:8px 12px;font-size:12.5px;border-radius:8px;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .demo-card:focus-visible, .nav-item:focus-visible{outline:2px solid var(--green); outline-offset:2px;}
+
+.login-foot{margin-top:auto;padding-top:18px;font-size:11.5px;color:var(--ink-faint);display:flex;justify-content:space-between;align-items:center;}
+.login-error{display:none;background:var(--rust-tint);color:#7a3020;border:1px solid #e2b6a8;font-size:12.5px;font-weight:600;padding:9px 12px;border-radius:8px;margin-bottom:12px;}
+
+@media (max-width:820px){
+  .login-card{grid-template-columns:1fr;}
+  .login-brand{padding:34px 28px;}
+  .brand-stats{display:none;}
+}
+
+/* ============ APP SHELL ============ */
+#app-shell{display:none;min-height:100vh;grid-template-columns:248px 1fr;}
+#app-shell.active{display:grid;}
+
+.sidebar{background:var(--paper-raised);border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+.sidebar-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 22px 8px;border-bottom:1px solid var(--line);margin-bottom:14px;}
+.sidebar-brand .brand-name{color:var(--ink);}
+.sidebar-brand .brand-name b{font-size:14.5px;}
+.sidebar-brand .brand-name span{font-size:10.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em;}
+
+.nav-group-label{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-faint);padding:14px 10px 6px;}
+.nav-item{
+  display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:9px 10px;border-radius:9px;
+  background:transparent;border:none;color:var(--ink-soft);font-size:13.5px;font-weight:600;
+  transition:background .15s ease, color .15s ease, padding-left .15s ease;position:relative;
+}
+.nav-item .ic{width:17px;height:17px;flex-shrink:0;opacity:.85;}
+.nav-item:hover{background:var(--paper-deep);color:var(--ink);padding-left:14px;}
+.nav-item.active{background:var(--green-tint);color:var(--green-deep);}
+.nav-item.active .ic{opacity:1;}
+.nav-item .badge-dot{margin-left:auto;background:var(--rust);color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;}
+
+.sidebar-user{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--green);color:var(--paper-raised);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:14px;flex-shrink:0;}
+.sidebar-user .who{flex:1;min-width:0;}
+.sidebar-user .who b{display:block;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sidebar-user .who span{font-size:10.5px;color:var(--ink-faint);text-transform:capitalize;}
+.icon-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--paper);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:background .15s ease, color .15s ease, border-color .15s ease, transform .15s ease;}
+.icon-btn:hover{background:var(--rust-tint);color:var(--rust);border-color:#e2b6a8;transform:rotate(-6deg);}
+.icon-btn svg{width:16px;height:16px;}
+
+.main{min-width:0;}
+.topbar{
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;padding:16px 28px;
+  background:rgba(241,239,230,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+.topbar h1{font-family:var(--font-display);font-size:20px;font-weight:600;}
+.topbar .sub{font-size:12px;color:var(--ink-faint);margin-top:1px;}
+.topbar .clock{margin-left:auto;font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);display:flex;align-items:center;gap:7px;}
+.dot-live{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+.topbar-search{position:relative;width:220px;}
+.topbar-search input{width:100%;padding:8px 12px 8px 32px;border:1px solid var(--line);border-radius:20px;background:var(--paper-raised);font-size:12.5px;transition:width .2s ease, border-color .15s ease, box-shadow .15s ease;}
+.topbar-search input:focus{outline:none;width:260px;border-color:var(--green);box-shadow:0 0 0 3px var(--green-tint);}
+.topbar-search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink-faint);}
+
+.bell-wrap{position:relative;}
+.bell-wrap .badge-dot{position:absolute;top:-3px;right:-3px;background:var(--rust);color:#fff;font-family:var(--font-mono);font-size:9px;font-weight:700;min-width:15px;height:15px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:2px solid var(--paper);}
+
+.content{padding:26px 28px 60px;max-width:1180px;}
+.view{animation:view-in .35s ease both;}
+@keyframes view-in{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
+.section-head h2{font-family:var(--font-display);font-size:24px;font-weight:600;}
+.section-head p{color:var(--ink-soft);font-size:13.5px;margin-top:4px;max-width:52ch;}
+
+.ticket-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:28px;}
+.ticket{position:relative;display:flex;background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;}
+.ticket:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--line-strong);}
+.ticket .stub{width:64px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--paper-raised);position:relative;}
+.ticket .stub .ic{width:22px;height:22px;}
+.ticket .notch{position:absolute;width:15px;height:15px;border-radius:50%;background:var(--paper);left:64px;transform:translateX(-50%);z-index:2;}
+.ticket .notch.top{top:-7.5px;}
+.ticket .notch.bottom{bottom:-7.5px;}
+.ticket .tear{position:absolute;top:0;bottom:0;left:64px;border-left:2px dashed rgba(255,255,255,.55);}
+.ticket .body{padding:14px 16px;flex:1;min-width:0;}
+.ticket .body .num{font-family:var(--font-display);font-size:26px;font-weight:600;line-height:1;}
+.ticket .body .label{font-size:11.5px;color:var(--ink-soft);margin-top:6px;font-weight:600;}
+.ticket.t-total .stub{background:var(--ink);}
+.ticket.t-pending .stub{background:var(--ochre);}
+.ticket.t-review .stub{background:var(--teal);}
+.ticket.t-approved .stub{background:var(--green);}
+.ticket.t-released .stub{background:var(--slate);}
+.ticket.t-rejected .stub{background:var(--rust);}
+
+.stamp{
+  display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:4px 9px;border-radius:20px;border:1.5px solid transparent;transform:rotate(-2deg);transition:transform .18s ease;
+}
+.ticket-card:hover .stamp, .clr-row:hover .stamp{transform:rotate(0deg) scale(1.04);}
+.stamp::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.stamp.s-pending{color:var(--ochre);border-color:var(--ochre);background:var(--ochre-tint);}
+.stamp.s-review{color:var(--teal);border-color:var(--teal);background:var(--teal-tint);}
+.stamp.s-approved{color:var(--green);border-color:var(--green);background:var(--green-tint);}
+.stamp.s-released{color:var(--slate);border-color:var(--slate);background:var(--slate-tint);}
+.stamp.s-rejected{color:var(--rust);border-color:var(--rust);background:var(--rust-tint);}
+
+.panel{background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:22px;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap;}
+.panel-head h3{font-family:var(--font-display);font-size:16.5px;font-weight:600;}
+.panel-head .count-chip{font-family:var(--font-mono);font-size:11px;background:var(--paper-deep);padding:3px 9px;border-radius:20px;color:var(--ink-soft);font-weight:600;}
+
+.two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;}
+@media (max-width:900px){.two-col{grid-template-columns:1fr;}}
+
+.activity-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px dashed var(--line);}
+.activity-item:last-child{border-bottom:none;}
+.activity-item .adot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0;}
+.activity-item .atext b{font-weight:700;}
+.activity-item .atime{font-size:11px;color:var(--ink-faint);margin-top:2px;font-family:var(--font-mono);}
+
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.bar-row .bar-label{width:92px;flex-shrink:0;font-size:12px;font-weight:600;color:var(--ink-soft);}
+.bar-track{flex:1;height:9px;background:var(--paper-deep);border-radius:6px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--green),var(--teal));width:0%;transition:width 1s cubic-bezier(.16,1,.3,1);}
+.bar-row .bar-val{width:26px;text-align:right;font-family:var(--font-mono);font-size:11.5px;color:var(--ink-soft);}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media (max-width:700px){.form-grid{grid-template-columns:1fr;}}
+.form-grid .full{grid-column:1 / -1;}
+.field.styled input, .field.styled textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--paper);font-size:13.5px;transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;}
+.field.styled textarea{resize:vertical;min-height:76px;}
+.field.styled input:focus, .field.styled textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-tint);background:var(--paper-raised);}
+.field .req{color:var(--rust);}
+.hint{font-size:11px;color:var(--ink-faint);margin-top:5px;}
+
+.pill-select{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{padding:8px 14px;border:1px solid var(--line);border-radius:20px;background:var(--paper);font-size:12.5px;font-weight:600;color:var(--ink-soft);transition:all .15s ease;}
+.pill:hover{border-color:var(--line-strong);background:var(--paper-raised);transform:translateY(-1px);}
+.pill.selected{background:var(--green);border-color:var(--green);color:var(--paper-raised);box-shadow:0 4px 10px -4px rgba(43,65,48,.6);}
+
+.purpose-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+@media (max-width:560px){.purpose-grid{grid-template-columns:1fr;}}
+.purpose-card{text-align:left;padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:var(--paper);font-size:12.5px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:9px;transition:all .15s ease;}
+.purpose-card:hover{border-color:var(--line-strong);transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+.purpose-card.selected{background:var(--green-tint);border-color:var(--green);color:var(--green-deep);}
+.purpose-card .radio{width:15px;height:15px;border-radius:50%;border:2px solid var(--line-strong);flex-shrink:0;position:relative;}
+.purpose-card.selected .radio{border-color:var(--green);}
+.purpose-card.selected .radio::after{content:"";position:absolute;inset:2.5px;border-radius:50%;background:var(--green);}
+
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);}
+
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{text-align:left;font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);font-weight:600;padding:0 12px 10px;border-bottom:1px solid var(--line);white-space:nowrap;}
+.clr-row td{padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:middle;}
+.clr-row{position:relative;cursor:pointer;transition:background .15s ease;}
+.clr-row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .15s ease;}
+.clr-row:hover{background:var(--paper-deep);}
+.clr-row:hover::before{background:var(--green);}
+.clr-row td:first-child{font-family:var(--font-mono);font-weight:600;font-size:12px;color:var(--ink-soft);}
+.clr-row .name-cell b{font-weight:700;}
+.clr-row .name-cell span{display:block;font-size:11px;color:var(--ink-faint);}
+.row-actions{display:flex;gap:6px;}
+
+.empty-state{text-align:center;padding:56px 20px;color:var(--ink-soft);}
+.empty-state .ic-wrap{width:56px;height:56px;border-radius:50%;background:var(--paper-deep);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);}
+.empty-state h4{font-family:var(--font-display);font-size:16px;color:var(--ink);margin-bottom:5px;}
+.empty-state p{font-size:12.5px;max-width:34ch;margin:0 auto;}
+
+.notif-item{display:flex;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line);position:relative;transition:background .15s ease;}
+.notif-item:hover{background:var(--paper-deep);}
+.notif-item.unread::after{content:"";position:absolute;left:-14px;top:20px;width:7px;height:7px;border-radius:50%;background:var(--rust);}
+.notif-item .nic{width:34px;height:34px;border-radius:9px;background:var(--green-tint);color:var(--green);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.notif-item .ntxt b{font-size:13px;}
+.notif-item .ntxt p{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+.notif-item .ntxt time{font-size:10.5px;color:var(--ink-faint);font-family:var(--font-mono);margin-top:5px;display:block;}
+
+.role-chip{font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:6px;background:var(--paper-deep);color:var(--ink-soft);}
+
+.info-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px dashed var(--line);font-size:13px;}
+.info-row span{color:var(--ink-soft);}
+.info-row b{font-weight:700;}
+.tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+.tag{background:var(--paper-deep);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;color:var(--ink-soft);}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(35,35,25,.45);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+.modal-overlay.active{opacity:1;pointer-events:auto;}
+.modal{background:var(--paper-raised);border-radius:var(--radius-lg);max-width:480px;width:100%;box-shadow:var(--shadow-lg);transform:translateY(14px) scale(.98);transition:transform .22s cubic-bezier(.2,.9,.3,1.1);max-height:88vh;overflow-y:auto;}
+.modal-overlay.active .modal{transform:translateY(0) scale(1);}
+.modal-head{padding:20px 22px 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.modal-head h3{font-family:var(--font-display);font-size:18px;font-weight:600;}
+.modal-close{background:none;border:none;color:var(--ink-faint);width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .15s ease,color .15s ease;}
+.modal-close:hover{background:var(--paper-deep);color:var(--ink);}
+.modal-body{padding:14px 22px 22px;}
+.modal-foot{padding:0 22px 22px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+
+.detail-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13px;gap:14px;}
+.detail-row span:first-child{color:var(--ink-soft);flex-shrink:0;}
+.detail-row span:last-child{font-weight:700;text-align:right;}
+
+#toast-stack{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;gap:10px;align-items:flex-end;}
+.toast{display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper-raised);padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);animation:toast-in .3s cubic-bezier(.2,.9,.3,1.1) both;max-width:320px;}
+.toast.ok .tdot{background:#7BAA82;}
+.toast.err .tdot{background:#D48A76;}
+.toast .tdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+@keyframes toast-in{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
+@keyframes toast-out{to{opacity:0;transform:translateX(30px);}}
+
+.spinner{width:15px;height:15px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-row{text-align:center;padding:40px;color:var(--ink-faint);font-size:12.5px;}
+
+@media (max-width:880px){
+  #app-shell.active{grid-template-columns:1fr;}
+  .sidebar{position:relative;height:auto;flex-direction:row;align-items:center;padding:12px 14px;overflow-x:auto;}
+  .sidebar-brand{border:none;padding:0;margin:0 14px 0 0;}
+  .nav-group-label{display:none;}
+  .sidebar-user{margin:0 0 0 14px;padding:0 0 0 14px;border-top:none;border-left:1px solid var(--line);}
+  .nav-list{display:flex;gap:4px;}
+  .content{padding:20px 16px 50px;}
+  .topbar{padding:14px 16px;}
+  .topbar-search{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div>
+        <div class="brand-top">
+          <svg class="seal seal-mono" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" stroke-width="1.4"/><circle cx="22" cy="22" r="15.5" stroke-width="1" stroke-dasharray="2 3"/><text x="22" y="26" text-anchor="middle" font-family="Fraunces, serif" font-size="13" fill="currentColor" font-weight="600">BL</text></svg>
+          <div class="brand-name">Republic of the Philippines<b>Barangay Lapasan</b></div>
+        </div>
+        <h1 class="login-headline">Your clearance,<br><em>issued like a ticket</em> — tracked start to finish.</h1>
+        <p class="login-sub">Request barangay clearances, residency and indigency certificates, and business permits, then follow every request from submission to release.</p>
+      </div>
+      <div class="brand-stats">
+        <div class="brand-stat"><b>4</b><span>Sitios served</span></div>
+        <div class="brand-stat"><b>6</b><span>Purposes</span></div>
+        <div class="brand-stat"><b>Live</b><span>Connected to server</span></div>
+      </div>
+    </div>
+
+    <div class="login-form-side">
+      <h2>Sign in</h2>
+      <p class="lede">This is connected to the real backend — actions here read and write the actual database.</p>
+
+      <div class="demo-grid" id="demo-grid"></div>
+
+      <div id="login-error" class="login-error"></div>
+
+      <div class="field">
+        <label for="login-username">Username</label>
+        <input id="login-username" type="text" placeholder="e.g. resident" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" placeholder="••••••••" autocomplete="off">
+      </div>
+      <button class="btn btn-primary btn-block" id="login-btn" onclick="attemptLogin()">Sign in to your account</button>
+
+      <div class="login-foot">
+        <span>Sitio Clearance Ticket Service · v2.0</span>
+        <span id="conn-status">Connecting…</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div id="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <svg class="seal seal-mono" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" stroke-width="1.4"/><circle cx="22" cy="22" r="15.5" stroke-width="1" stroke-dasharray="2 3"/><text x="22" y="26" text-anchor="middle" font-family="Fraunces, serif" font-size="13" fill="currentColor" font-weight="600">BL</text></svg>
+      <div class="brand-name"><b>Clearance Tickets</b><span>Barangay Lapasan</span></div>
+    </div>
+    <div class="nav-list" id="nav-list"></div>
+    <div class="sidebar-user">
+      <div class="avatar" id="sidebar-avatar">JD</div>
+      <div class="who"><b id="sidebar-name">—</b><span id="sidebar-role">—</span></div>
+      <button class="icon-btn" title="Log out" onclick="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div><h1 id="page-title">Dashboard</h1><div class="sub" id="page-sub">Overview of your clearance activity</div></div>
+      <div class="topbar-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="global-search" placeholder="Search clearance no. or name" oninput="handleSearch(this.value)">
+      </div>
+      <div class="clock"><span class="dot-live"></span><span id="clock-text">—</span></div>
+      <div class="bell-wrap">
+        <button class="icon-btn" onclick="showView('notifications')" title="Notifications" style="background:var(--paper-raised);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+        <span class="badge-dot hidden" id="bell-badge">0</span>
+      </div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<div id="toast-stack"></div>
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal" id="modal-box"></div>
+</div>
+
+<script>
+/* ============================================================
+   API HELPER — every call goes to the Flask backend in app.py
+============================================================ */
+async function api(path, opts={}){
+  const res = await fetch(path, {
+    method: opts.method || 'GET',
+    headers: opts.body ? {'Content-Type':'application/json'} : {},
+    credentials: 'same-origin',
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
+  });
+  let data = null;
+  try{ data = await res.json(); }catch(e){ /* no body */ }
+  if(!res.ok){
+    const err = new Error((data && data.error) || `Request failed (${res.status})`);
+    err.status = res.status;
+    throw err;
+  }
+  return data;
+}
+
+/* ============================================================
+   STATE
+============================================================ */
+let META = {sitios:[], purposes:[], role_labels:{}, pdf_available:false};
+let currentUser = null;
+let activeView = "dashboard";
+let searchTerm = "";
+let searchDebounce = null;
+
+const DEMO_ACCOUNTS = [
+  {username:"resident",  password:"resident123", role:"resident",         label:"Resident",          note:"John Doe"},
+  {username:"sanlazaro", password:"leader123",   role:"sitio_leader",     label:"Sitio Leader",      note:"San Lazaro"},
+  {username:"officer",   password:"officer123",  role:"barangay_officer", label:"Barangay Officer",  note:"Barangay Hall"},
+  {username:"admin",     password:"admin123",    role:"admin",            label:"Administrator",     note:"Full access"},
+];
+
+/* ============================================================
+   ICONS
+============================================================ */
+const ICONS = {
+  dashboard:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>',
+  request:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>',
+  mine:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l3 4v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6z"/><path d="M9 12h6M9 16h4"/></svg>',
+  bell:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+  all:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l3 4v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>',
+  approve:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  stats:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-6 4 3 5-7"/></svg>',
+  reports:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg>',
+  settings:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+  users:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  ticket:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 1 0 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 1 1 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+  download:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+};
+const STATUS_CLASS = {"Pending":"pending","Under Review":"review","Approved":"approved","Released":"released","Rejected":"rejected"};
+
+/* ============================================================
+   BOOT
+============================================================ */
+async function boot(){
+  try{
+    META = await api('/api/meta');
+    document.getElementById('conn-status').textContent = 'Connected to server';
+  }catch(e){
+    document.getElementById('conn-status').textContent = 'Server unreachable';
+  }
+  renderDemoGrid();
+  try{
+    const me = await api('/api/me');
+    currentUser = me;
+    enterApp();
+  }catch(e){ /* not logged in, stay on login screen */ }
+}
+boot();
+
+/* ============================================================
+   LOGIN
+============================================================ */
+function renderDemoGrid(){
+  const grid = document.getElementById('demo-grid');
+  grid.innerHTML = DEMO_ACCOUNTS.map(u => `
+    <button type="button" class="demo-card" data-username="${u.username}" onclick="selectDemo('${u.username}')">
+      <div class="role-tag">${u.label}</div>
+      <div class="role-name">${u.username}</div>
+      <div class="role-meta">${u.note}</div>
+    </button>
+  `).join('');
+}
+function selectDemo(username){
+  const u = DEMO_ACCOUNTS.find(x=>x.username===username);
+  document.getElementById('login-username').value = u.username;
+  document.getElementById('login-password').value = u.password;
+  document.querySelectorAll('.demo-card').forEach(c=>c.classList.toggle('active', c.dataset.username===username));
+  document.getElementById('login-error').style.display = 'none';
+}
+async function attemptLogin(){
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value.trim();
+  const btn = document.getElementById('login-btn');
+  const errBox = document.getElementById('login-error');
+
+  if(!username || !password){
+    errBox.textContent = "Please enter both username and password.";
+    errBox.style.display = 'block';
+    return;
+  }
+  errBox.style.display = 'none';
+  const original = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner"></span> Signing in…';
+  btn.disabled = true;
+  try{
+    const user = await api('/api/login', {method:'POST', body:{username, password}});
+    currentUser = user;
+    enterApp();
+  }catch(e){
+    errBox.textContent = e.message;
+    errBox.style.display = 'block';
+  }finally{
+    btn.innerHTML = original;
+    btn.disabled = false;
+  }
+}
+document.getElementById('login-password').addEventListener('keydown', e=>{ if(e.key==='Enter') attemptLogin(); });
+document.getElementById('login-username').addEventListener('keydown', e=>{ if(e.key==='Enter') attemptLogin(); });
+
+function enterApp(){
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-shell').classList.add('active');
+  initShell();
+}
+
+async function logout(){
+  try{ await api('/api/logout', {method:'POST'}); }catch(e){}
+  toast(`Goodbye, ${currentUser.full_name.split(' ')[0]}!`, 'ok');
+  setTimeout(()=>{
+    currentUser = null;
+    document.getElementById('app-shell').classList.remove('active');
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('login-username').value='';
+    document.getElementById('login-password').value='';
+    document.querySelectorAll('.demo-card').forEach(c=>c.classList.remove('active'));
+  }, 400);
+}
+
+/* ============================================================
+   SHELL
+============================================================ */
+function titleCase(s){ return (s||'').split(' ').map(w=>w[0]+w.slice(1).toLowerCase()).join(' '); }
+
+function initShell(){
+  const initials = currentUser.full_name.split(' ').map(w=>w[0]).slice(0,2).join('');
+  document.getElementById('sidebar-avatar').textContent = initials;
+  document.getElementById('sidebar-name').textContent = currentUser.full_name;
+  document.getElementById('sidebar-role').textContent = currentUser.role_label + (currentUser.sitio && currentUser.role!=='admin' ? ' · '+titleCase(currentUser.sitio) : '');
+  renderNav();
+  showView('dashboard');
+  tickClock();
+  setInterval(tickClock, 1000);
+}
+function tickClock(){
+  document.getElementById('clock-text').textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+}
+
+function navForRole(role){
+  let items = [
+    {key:"dashboard", label:"Dashboard", icon:"dashboard"},
+    {key:"request", label:"New Request", icon:"request"},
+    {key:"mine", label:"My Clearances", icon:"mine"},
+    {key:"notifications", label:"Notifications", icon:"bell", badge:true},
+  ];
+  if(["sitio_leader","barangay_officer","admin"].includes(role)){
+    items.push({key:"all", label:"All Clearances", icon:"all"});
+    items.push({key:"approvals", label:"Approve Requests", icon:"approve", pendingBadge:true});
+  }
+  if(["barangay_officer","admin"].includes(role)){
+    items.push({key:"stats", label:"Statistics", icon:"stats"});
+    items.push({key:"reports", label:"Reports", icon:"reports"});
+    items.push({key:"settings", label:"Settings", icon:"settings"});
+  }
+  if(role === "admin"){
+    items.push({key:"users", label:"User Management", icon:"users"});
+  }
+  return items;
+}
+
+let unreadCount = 0;
+let pendingCount = 0;
+
+async function refreshBadgeCounts(){
+  try{
+    const notifs = await api('/api/notifications');
+    unreadCount = notifs.filter(n=>!n.is_read).length;
+  }catch(e){}
+  if(["sitio_leader","barangay_officer","admin"].includes(currentUser.role)){
+    try{
+      const pending = await api('/api/clearances?status=Pending');
+      pendingCount = pending.length;
+    }catch(e){}
+  }
+  document.getElementById('bell-badge').classList.toggle('hidden', unreadCount===0);
+  document.getElementById('bell-badge').textContent = unreadCount;
+  renderNav();
+}
+
+function renderNav(){
+  const items = navForRole(currentUser.role);
+  document.getElementById('nav-list').innerHTML = items.map(item=>{
+    let badge = '';
+    if(item.badge && unreadCount>0) badge = `<span class="badge-dot">${unreadCount}</span>`;
+    if(item.pendingBadge && pendingCount>0) badge = `<span class="badge-dot">${pendingCount}</span>`;
+    return `<button class="nav-item ${activeView===item.key?'active':''}" onclick="showView('${item.key}')">${ICONS[item.icon]}<span>${item.label}</span>${badge}</button>`;
+  }).join('');
+}
+
+const PAGE_META = {
+  dashboard:["Dashboard","Overview of your clearance activity"],
+  request:["New Clearance Request","Submit a new sitio clearance ticket"],
+  mine:["My Clearances","Requests you've submitted"],
+  notifications:["Notifications","Updates on your requests"],
+  all:["All Clearances","Every request visible to your role"],
+  approvals:["Approve Requests","Review and act on pending tickets"],
+  stats:["Statistics","Clearance activity at a glance"],
+  reports:["Reports","Export clearance data"],
+  settings:["Settings","System information"],
+  users:["User Management","Accounts with portal access"],
+};
+
+async function showView(key){
+  activeView = key;
+  const [title, sub] = PAGE_META[key];
+  document.getElementById('page-title').textContent = title;
+  document.getElementById('page-sub').textContent = sub;
+  renderNav();
+  document.getElementById('content').innerHTML = `<div class="loading-row">Loading…</div>`;
+
+  const renderers = {
+    dashboard: renderDashboard, request: renderRequestForm, mine: renderMine,
+    notifications: renderNotifications, all: renderAll, approvals: renderApprovals,
+    stats: renderStats, reports: renderReports, settings: renderSettings, users: renderUsers
+  };
+  try{
+    const html = await renderers[key]();
+    document.getElementById('content').innerHTML = `<div class="view">${html}</div>`;
+    if(key==='dashboard') animateCounters();
+    if(key==='stats') setTimeout(animateBars, 60);
+  }catch(e){
+    document.getElementById('content').innerHTML = `<div class="view">${emptyState('Something went wrong', e.message)}</div>`;
+  }
+  refreshBadgeCounts();
+}
+
+/* ============================================================
+   DASHBOARD
+============================================================ */
+async function renderDashboard(){
+  const [s, list] = await Promise.all([
+    api('/api/stats'),
+    api(`/api/clearances?scope=${currentUser.role==='resident'?'mine':'auto'}`)
+  ]);
+  const recent = list.slice(0,6);
+  const scopeNote = currentUser.role==='sitio_leader'
+    ? `<p>Managing requests for Sitio <b>${titleCase(currentUser.sitio)}</b>.</p>`
+    : currentUser.role==='resident' ? `<p>Showing your own submitted requests.</p>` : `<p>Showing activity across all four sitios.</p>`;
+
+  return `
+    <div class="section-head"><div><h2>Welcome back, ${currentUser.full_name.split(' ')[0]}</h2>${scopeNote}</div></div>
+    <div class="ticket-row">
+      ${statTicket('t-total', s.total||0, 'Total requests', 'ticket')}
+      ${statTicket('t-pending', s.pending||0, 'Pending', 'bell')}
+      ${statTicket('t-review', s.under_review||0, 'Under review', 'eye')}
+      ${statTicket('t-approved', s.approved||0, 'Approved', 'check')}
+      ${statTicket('t-released', s.released||0, 'Released', 'download')}
+      ${statTicket('t-rejected', s.rejected||0, 'Rejected', 'x')}
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head"><h3>Recent tickets</h3><span class="count-chip">${recent.length} shown</span></div>
+        ${recent.length ? recent.map(c=>clearanceListItem(c)).join('') : emptyState('No tickets yet', 'Submit a new request to see it appear here.')}
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Signed in as</h3></div>
+        <div class="detail-row"><span>Name</span><span>${currentUser.full_name}</span></div>
+        <div class="detail-row"><span>Role</span><span>${currentUser.role_label}</span></div>
+        <div class="detail-row"><span>Sitio</span><span>${titleCase(currentUser.sitio)}</span></div>
+        <div class="detail-row" style="border-bottom:none;"><span>Server</span><span style="color:var(--green);">● Live</span></div>
+      </div>
+    </div>
+  `;
+}
+function statTicket(cls, num, label, icon){
+  return `
+    <div class="ticket ${cls}">
+      <div class="stub">${ICONS[icon]||''}</div>
+      <span class="notch top"></span><span class="notch bottom"></span><span class="tear"></span>
+      <div class="body"><div class="num" data-count="${num}">0</div><div class="label">${label}</div></div>
+    </div>`;
+}
+function animateCounters(){
+  document.querySelectorAll('.ticket .num[data-count]').forEach(el=>{
+    const target = parseInt(el.dataset.count,10);
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent = target; return; }
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(target/24));
+    const iv = setInterval(()=>{ cur += step; if(cur>=target){ cur = target; clearInterval(iv); } el.textContent = cur; }, 18);
+  });
+}
+
+/* ============================================================
+   TICKET LIST ITEM
+============================================================ */
+function clearanceListItem(c){
+  const cls = STATUS_CLASS[c.status] || 'pending';
+  return `
+  <div class="ticket ticket-card" style="margin-bottom:10px;cursor:pointer;" onclick="openDetail(${c.id})">
+    <div class="stub" style="background:var(--paper-deep);color:var(--ink-soft);width:8px;padding:0;"></div>
+    <div class="body" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px;">
+      <div style="min-width:0;">
+        <div class="mono" style="font-size:11.5px;color:var(--ink-faint);">${c.clearance_number}</div>
+        <div style="font-weight:700;font-size:13.5px;margin-top:2px;">${c.purpose}</div>
+        <div style="font-size:11.5px;color:var(--ink-soft);margin-top:1px;">${titleCase(c.sitio)} · needed ${c.date_needed}</div>
+      </div>
+      <span class="stamp s-${cls}">${c.status}</span>
+    </div>
+  </div>`;
+}
+function emptyState(title, sub){
+  return `<div class="empty-state"><div class="ic-wrap">${ICONS.ticket}</div><h4>${title}</h4><p>${sub}</p></div>`;
+}
+
+/* ============================================================
+   NEW REQUEST
+============================================================ */
+let selectedSitio = null;
+let selectedPurpose = null;
+
+async function renderRequestForm(){
+  selectedSitio = ["resident","sitio_leader"].includes(currentUser.role) ? currentUser.sitio : null;
+  selectedPurpose = null;
+  return `
+    <div class="section-head"><div><h2>Submit a new request</h2><p>Fill in the details below. Your Sitio Leader will review it once submitted.</p></div></div>
+    <div class="panel">
+      <div class="form-grid">
+        <div class="field styled full"><label>Full name <span class="req">*</span></label><input id="f-name" type="text" value="${currentUser.full_name}"></div>
+        <div class="field styled full"><label>Address <span class="req">*</span></label><input id="f-address" type="text" placeholder="House no., street"></div>
+        <div class="field styled"><label>Contact number <span class="req">*</span></label><input id="f-contact" type="text" placeholder="09XXXXXXXXX"></div>
+        <div class="field styled"><label>Valid ID number <span class="req">*</span></label><input id="f-id" type="text" placeholder="ID-0000"></div>
+
+        <div class="field full">
+          <label>Sitio <span class="req">*</span></label>
+          <div class="pill-select" id="sitio-pills">
+            ${META.sitios.map(s=>`<button type="button" class="pill ${selectedSitio===s?'selected':''}" onclick="pickSitio('${s}')">${titleCase(s)}</button>`).join('')}
+          </div>
+        </div>
+        <div class="field full">
+          <label>Purpose <span class="req">*</span></label>
+          <div class="purpose-grid" id="purpose-cards">
+            ${META.purposes.map(p=>`<button type="button" class="purpose-card" onclick="pickPurpose('${p.replace(/'/g,"\\'")}')" data-p="${p}"><span class="radio"></span><span>${p}</span></button>`).join('')}
+          </div>
+        </div>
+        <div class="field styled"><label>Date needed <span class="req">*</span></label><input id="f-date" type="date"></div>
+        <div class="field styled"><label>Remarks <span style="color:var(--ink-faint);font-weight:400;">(optional)</span></label><input id="f-remarks" type="text" placeholder="Any additional notes"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="showView('dashboard')">Cancel</button>
+        <button class="btn btn-primary" id="submit-btn" onclick="submitRequest()">${ICONS.request} Submit request</button>
+      </div>
+    </div>
+  `;
+}
+function pickSitio(s){
+  selectedSitio = s;
+  document.querySelectorAll('#sitio-pills .pill').forEach(p=>p.classList.toggle('selected', p.textContent.trim()===titleCase(s)));
+}
+function pickPurpose(p){
+  selectedPurpose = p;
+  document.querySelectorAll('#purpose-cards .purpose-card').forEach(c=>c.classList.toggle('selected', c.dataset.p===p));
+}
+async function submitRequest(){
+  const payload = {
+    name: document.getElementById('f-name').value.trim(),
+    address: document.getElementById('f-address').value.trim(),
+    contact: document.getElementById('f-contact').value.trim(),
+    id_number: document.getElementById('f-id').value.trim(),
+    date_needed: document.getElementById('f-date').value,
+    remarks: document.getElementById('f-remarks').value.trim(),
+    sitio: selectedSitio,
+    purpose: selectedPurpose,
+  };
+  if(!payload.name || !payload.address || !payload.contact || !payload.id_number || !payload.date_needed || !payload.sitio || !payload.purpose){
+    toast('Please fill in all required fields.', 'err');
+    return;
+  }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Submitting…';
+  try{
+    const rec = await api('/api/clearances', {method:'POST', body:payload});
+    toast(`Request submitted — ticket ${rec.clearance_number}`, 'ok');
+    openModal(`
+      <div class="modal-head"><h3>Ticket issued</h3><button class="modal-close" onclick="closeModal()">${ICONS.x}</button></div>
+      <div class="modal-body">
+        <p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:14px;">Your request was saved to the database and is now pending review from your Sitio Leader.</p>
+        <div class="detail-row"><span>Ticket number</span><span class="mono">${rec.clearance_number}</span></div>
+        <div class="detail-row"><span>Purpose</span><span>${rec.purpose}</span></div>
+        <div class="detail-row"><span>Sitio</span><span>${titleCase(rec.sitio)}</span></div>
+        <div class="detail-row"><span>Date needed</span><span>${rec.date_needed}</span></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-primary" onclick="closeModal(); showView('mine');">View my clearances</button></div>
+    `);
+  }catch(e){
+    toast(e.message, 'err');
+  }finally{
+    btn.disabled = false; btn.innerHTML = `${ICONS.request} Submit request`;
+  }
+}
+
+/* ============================================================
+   MY CLEARANCES
+============================================================ */
+async function renderMine(){
+  const list = await api(`/api/clearances?scope=mine${searchTerm?`&search=${encodeURIComponent(searchTerm)}`:''}`);
+  return `
+    <div class="section-head">
+      <div><h2>My clearance requests</h2><p>Every ticket you've submitted, and where it stands.</p></div>
+      <button class="btn btn-primary btn-sm" onclick="showView('request')">${ICONS.plus} New request</button>
+    </div>
+    <div class="panel">
+      ${list.length ? list.map(c=>clearanceListItem(c)).join('') : emptyState("No requests yet", "You haven't submitted any clearance requests. Start a new one to get a ticket number.")}
+    </div>
+  `;
+}
+
+/* ============================================================
+   ALL CLEARANCES
+============================================================ */
+async function renderAll(){
+  const q = searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : '';
+  const list = await api(`/api/clearances?scope=auto${q}`);
+  return `
+    <div class="section-head">
+      <div><h2>All clearance requests</h2><p>${currentUser.role==='sitio_leader'?`Requests filed within Sitio ${titleCase(currentUser.sitio)}.`:'Every request across all four sitios.'}</p></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>Requests</h3><span class="count-chip">${list.length} total</span></div>
+      ${list.length ? clearanceTable(list) : emptyState('No requests found', 'Try a different search term.')}
+    </div>
+  `;
+}
+function clearanceTable(list, actions){
+  return `
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Ticket No.</th><th>Requested by</th><th>Sitio</th><th>Purpose</th><th>Date needed</th><th>Status</th>${actions?'<th></th>':''}</tr></thead>
+    <tbody>
+      ${list.map(c=>{
+        const cls = STATUS_CLASS[c.status] || 'pending';
+        return `<tr class="clr-row" onclick="openDetail(${c.id})">
+          <td>${c.clearance_number}</td>
+          <td class="name-cell"><b>${c.name}</b><span>${c.id_number}</span></td>
+          <td>${titleCase(c.sitio)}</td>
+          <td>${c.purpose}</td>
+          <td class="mono" style="font-size:12px;">${c.date_needed}</td>
+          <td><span class="stamp s-${cls}">${c.status}</span></td>
+          ${actions ? `<td class="row-actions" onclick="event.stopPropagation()">
+              <button class="btn btn-ghost btn-sm" onclick="confirmApprove(${c.id})">Approve</button>
+              <button class="btn btn-danger-ghost btn-sm" onclick="confirmReject(${c.id})">Reject</button>
+            </td>` : ''}
+        </tr>`;
+      }).join('')}
+    </tbody>
+  </table>
+  </div>`;
+}
+
+/* ============================================================
+   APPROVALS
+============================================================ */
+async function renderApprovals(){
+  const q = searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : '';
+  const pending = await api(`/api/clearances?scope=auto&status=Pending${q}`);
+  return `
+    <div class="section-head"><div><h2>Approve requests</h2><p>Pending tickets waiting on your decision.</p></div></div>
+    <div class="panel">
+      <div class="panel-head"><h3>Pending queue</h3><span class="count-chip">${pending.length} pending</span></div>
+      ${pending.length ? clearanceTable(pending, true) : emptyState('Queue is clear', 'There are no pending requests waiting for review right now.')}
+    </div>
+  `;
+}
+async function confirmApprove(id){
+  const c = await api(`/api/clearances/${id}`);
+  openModal(`
+    <div class="modal-head"><h3>Approve this ticket?</h3><button class="modal-close" onclick="closeModal()">${ICONS.x}</button></div>
+    <div class="modal-body">
+      <p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:14px;">Approving <b class="mono">${c.clearance_number}</b> for <b>${c.name}</b> will notify them and mark the certificate ready to prepare.</p>
+      <div class="detail-row"><span>Purpose</span><span>${c.purpose}</span></div>
+      <div class="detail-row"><span>Sitio</span><span>${titleCase(c.sitio)}</span></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="doApprove(${id})">${ICONS.check} Approve ticket</button>
+    </div>
+  `);
+}
+async function doApprove(id){
+  try{
+    const c = await api(`/api/clearances/${id}/approve`, {method:'POST'});
+    closeModal();
+    toast(`${c.clearance_number} approved`, 'ok');
+    showView(activeView);
+  }catch(e){ toast(e.message, 'err'); }
+}
+async function confirmReject(id){
+  const c = await api(`/api/clearances/${id}`);
+  openModal(`
+    <div class="modal-head"><h3>Reject this ticket?</h3><button class="modal-close" onclick="closeModal()">${ICONS.x}</button></div>
+    <div class="modal-body">
+      <p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:12px;">Let <b>${c.name}</b> know why ticket <b class="mono">${c.clearance_number}</b> can't move forward.</p>
+      <div class="field styled"><label>Reason</label><textarea id="reject-reason" placeholder="e.g. Missing valid ID, outstanding dues…"></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger-ghost" onclick="doReject(${id})">${ICONS.x} Reject ticket</button>
+    </div>
+  `);
+}
+async function doReject(id){
+  const reason = document.getElementById('reject-reason').value.trim();
+  try{
+    const c = await api(`/api/clearances/${id}/reject`, {method:'POST', body:{reason}});
+    closeModal();
+    toast(`${c.clearance_number} rejected`, 'err');
+    showView(activeView);
+  }catch(e){ toast(e.message, 'err'); }
+}
+
+/* ============================================================
+   DETAIL MODAL
+============================================================ */
+async function openDetail(id){
+  const c = await api(`/api/clearances/${id}`);
+  const cls = STATUS_CLASS[c.status] || 'pending';
+  const canAct = ['sitio_leader','barangay_officer','admin'].includes(currentUser.role) && (c.status==='Pending' || c.status==='Under Review');
+  const canRelease = ['barangay_officer','admin'].includes(currentUser.role) && c.status==='Approved';
+  const canReview = ['sitio_leader','barangay_officer','admin'].includes(currentUser.role) && c.status==='Pending';
+
+  openModal(`
+    <div class="modal-head"><h3>${c.clearance_number}</h3><button class="modal-close" onclick="closeModal()">${ICONS.x}</button></div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px;"><span class="stamp s-${cls}">${c.status}</span></div>
+      <div class="detail-row"><span>Name</span><span>${c.name}</span></div>
+      <div class="detail-row"><span>Address</span><span>${c.address}</span></div>
+      <div class="detail-row"><span>Contact</span><span>${c.contact}</span></div>
+      <div class="detail-row"><span>ID number</span><span>${c.id_number}</span></div>
+      <div class="detail-row"><span>Sitio</span><span>${titleCase(c.sitio)}</span></div>
+      <div class="detail-row"><span>Purpose</span><span>${c.purpose}</span></div>
+      <div class="detail-row"><span>Date needed</span><span>${c.date_needed}</span></div>
+      <div class="detail-row"><span>Requested</span><span>${c.date_requested}</span></div>
+      ${c.approved_by_name ? `<div class="detail-row"><span>Handled by</span><span>${c.approved_by_name}</span></div>` : ''}
+      ${c.rejection_reason ? `<div class="detail-row"><span>Rejection reason</span><span>${c.rejection_reason}</span></div>` : ''}
+      ${c.remarks ? `<div class="detail-row"><span>Remarks</span><span>${c.remarks}</span></div>` : ''}
+    </div>
+    <div class="modal-foot">
+      ${(c.status==='Approved' || c.status==='Released') ? `<button class="btn btn-ghost" onclick="window.open('/api/clearances/${c.id}/certificate','_blank')">${ICONS.reports} Download certificate (PDF)</button>` : ''}
+      ${canReview ? `<button class="btn btn-ghost" onclick="doReview(${c.id})">${ICONS.eye} Mark under review</button>` : ''}
+      ${canRelease ? `<button class="btn btn-primary" onclick="doRelease(${c.id})">${ICONS.download} Mark released</button>` : ''}
+      ${canAct ? `<button class="btn btn-danger-ghost" onclick="closeModal(); confirmReject(${c.id});">Reject</button><button class="btn btn-primary" onclick="closeModal(); confirmApprove(${c.id});">Approve</button>` : ''}
+      ${!canAct && !canRelease ? `<button class="btn btn-ghost" onclick="closeModal()">Close</button>` : ''}
+    </div>
+  `);
+}
+async function doReview(id){
+  try{
+    const c = await api(`/api/clearances/${id}/review`, {method:'POST'});
+    toast(`${c.clearance_number} moved to review`, 'ok');
+    openDetail(id);
+  }catch(e){ toast(e.message, 'err'); }
+}
+async function doRelease(id){
+  try{
+    const c = await api(`/api/clearances/${id}/release`, {method:'POST'});
+    closeModal();
+    toast(`${c.clearance_number} marked released`, 'ok');
+    showView(activeView);
+  }catch(e){ toast(e.message, 'err'); }
+}
+
+/* ============================================================
+   NOTIFICATIONS
+============================================================ */
+async function renderNotifications(){
+  const list = await api('/api/notifications');
+  const unread = list.filter(n=>!n.is_read).length;
+  return `
+    <div class="section-head">
+      <div><h2>Notifications</h2><p>Updates about your submitted requests.</p></div>
+      ${unread>0 ? `<button class="btn btn-ghost btn-sm" onclick="markAllRead()">Mark all as read</button>` : ''}
+    </div>
+    <div class="panel" style="padding-left:26px;">
+      ${list.length ? list.map(n=>`
+        <div class="notif-item ${!n.is_read?'unread':''}" onclick="markRead(${n.id})">
+          <div class="nic">${ICONS.bell.replace('class="ic"','')}</div>
+          <div class="ntxt"><b>${n.title}</b><p>${n.message}</p><time>${n.created_at}</time></div>
+        </div>
+      `).join('') : emptyState('All caught up', "You'll see updates here as your requests move forward.")}
+    </div>
+  `;
+}
+async function markRead(id){
+  try{ await api(`/api/notifications/${id}/read`, {method:'POST'}); }catch(e){}
+  showView('notifications');
+}
+async function markAllRead(){
+  try{ await api('/api/notifications/read-all', {method:'POST'}); }catch(e){}
+  showView('notifications');
+}
+
+/* ============================================================
+   STATISTICS
+============================================================ */
+async function renderStats(){
+  const s = await api('/api/stats');
+  const list = await api('/api/clearances?scope=auto');
+  const bySitio = META.sitios.map(sitio => ({sitio, count: list.filter(c=>c.sitio===sitio).length}));
+  const maxCount = Math.max(1, ...bySitio.map(b=>b.count));
+  const breakdown = [
+    ["Pending","pending","ochre"], ["Under Review","under_review","teal"], ["Approved","approved","green"],
+    ["Released","released","slate"], ["Rejected","rejected","rust"]
+  ];
+  return `
+    <div class="section-head"><div><h2>Statistics</h2><p>Clearance activity ${currentUser.role==='sitio_leader'?`for Sitio ${titleCase(currentUser.sitio)}`:'across all sitios'}.</p></div></div>
+    <div class="ticket-row">
+      ${statTicket('t-total', s.total||0, 'Total requests', 'ticket')}
+      ${statTicket('t-pending', s.pending||0, 'Pending', 'bell')}
+      ${statTicket('t-review', s.under_review||0, 'Under review', 'eye')}
+      ${statTicket('t-approved', s.approved||0, 'Approved', 'check')}
+      ${statTicket('t-released', s.released||0, 'Released', 'download')}
+      ${statTicket('t-rejected', s.rejected||0, 'Rejected', 'x')}
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head"><h3>Requests by sitio</h3></div>
+        ${bySitio.map(b=>`<div class="bar-row"><div class="bar-label">${titleCase(b.sitio)}</div><div class="bar-track"><div class="bar-fill" data-w="${(b.count/maxCount*100).toFixed(0)}"></div></div><div class="bar-val">${b.count}</div></div>`).join('')}
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Status breakdown</h3></div>
+        ${breakdown.map(([label,key,color])=>{
+          const count = s[key] || 0;
+          const pct = s.total ? Math.round(count/s.total*100) : 0;
+          return `<div class="bar-row"><div class="bar-label">${label}</div><div class="bar-track"><div class="bar-fill" data-w="${pct}" style="background:var(--${color})"></div></div><div class="bar-val">${count}</div></div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+function animateBars(){ document.querySelectorAll('.bar-fill').forEach(el=>{ el.style.width = el.dataset.w + '%'; }); }
+
+/* ============================================================
+   REPORTS
+============================================================ */
+async function renderReports(){
+  return `
+    <div class="section-head"><div><h2>Reports</h2><p>Export clearance data for offline record-keeping.</p></div></div>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head"><h3>Export all clearances</h3></div>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;">Downloads every clearance record visible to your role as a JSON file.</p>
+        <button class="btn btn-primary" onclick="exportReport('all')">${ICONS.download} Export clearances (.json)</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Export pending requests</h3></div>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;">Downloads only the requests still awaiting a decision.</p>
+        <button class="btn btn-ghost" onclick="exportReport('pending')">${ICONS.download} Export pending (.json)</button>
+      </div>
+    </div>
+  `;
+}
+function exportReport(scope){
+  window.open(`/api/reports/export?scope=${scope}`, '_blank');
+  toast('Export started', 'ok');
+}
+
+/* ============================================================
+   SETTINGS
+============================================================ */
+async function renderSettings(){
+  const s = await api('/api/settings');
+  return `
+    <div class="section-head"><div><h2>Settings</h2><p>System information and configuration.</p></div></div>
+    <div class="panel">
+      <div class="panel-head"><h3>System information</h3></div>
+      <div class="info-row"><span>System name</span><b>${s.system_name}</b></div>
+      <div class="info-row"><span>Version</span><b>${s.version}</b></div>
+      <div class="info-row"><span>Database</span><b>${s.database}</b></div>
+      <div class="info-row"><span>Current user</span><b>${currentUser.full_name}</b></div>
+      <div class="info-row"><span>User role</span><b>${currentUser.role_label}</b></div>
+      <div class="info-row"><span>Sitio</span><b>${titleCase(currentUser.sitio)}</b></div>
+      <div class="info-row"><span>System status</span><b style="color:var(--green);">● Online</b></div>
+      <div class="info-row" style="border-bottom:none;"><span>PDF support</span><b style="color:${s.pdf_available?'var(--green)':'var(--rust)'};">${s.pdf_available?'✓ Available':'✗ Not installed'}</b></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>Registered sitios</h3></div>
+      <div class="tag-list">${s.sitios.map(x=>`<span class="tag">${titleCase(x)}</span>`).join('')}</div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   USER MANAGEMENT
+============================================================ */
+async function renderUsers(){
+  const users = await api('/api/users');
+  return `
+    <div class="section-head">
+      <div><h2>User management</h2><p>Everyone with access to the portal.</p></div>
+      <button class="btn btn-primary btn-sm" onclick="openCreateUser()">${ICONS.plus} Create user</button>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>All users</h3><span class="count-chip">${users.length} accounts</span></div>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Sitio</th></tr></thead>
+        <tbody>
+          ${users.map(u=>`<tr class="clr-row" style="cursor:default;">
+            <td class="name-cell"><b>${u.full_name}</b></td>
+            <td class="mono" style="font-size:12px;">${u.username}</td>
+            <td><span class="role-chip">${META.role_labels[u.role]||u.role}</span></td>
+            <td>${u.sitio ? titleCase(u.sitio) : '—'}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  `;
+}
+function openCreateUser(){
+  openModal(`
+    <div class="modal-head"><h3>Create new user</h3><button class="modal-close" onclick="closeModal()">${ICONS.x}</button></div>
+    <div class="modal-body">
+      <div class="field styled"><label>Username</label><input id="u-username" type="text"></div>
+      <div class="field styled"><label>Password</label><input id="u-password" type="password"></div>
+      <div class="field styled"><label>Full name</label><input id="u-fullname" type="text"></div>
+      <div class="field styled">
+        <label>Role</label>
+        <select id="u-role" onchange="toggleUserSitio()" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:8px;background:var(--paper);">
+          <option value="resident">Resident</option>
+          <option value="sitio_leader">Sitio Leader</option>
+          <option value="barangay_officer">Barangay Officer</option>
+          <option value="admin">Administrator</option>
+        </select>
+      </div>
+      <div class="field styled" id="u-sitio-field">
+        <label>Sitio</label>
+        <select id="u-sitio" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:8px;background:var(--paper);">
+          ${META.sitios.map(s=>`<option value="${s}">${titleCase(s)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="createUser()">Create account</button>
+    </div>
+  `);
+}
+function toggleUserSitio(){
+  const role = document.getElementById('u-role').value;
+  document.getElementById('u-sitio-field').style.display = role==='admin' ? 'none' : 'block';
+}
+async function createUser(){
+  const payload = {
+    username: document.getElementById('u-username').value.trim(),
+    password: document.getElementById('u-password').value.trim(),
+    full_name: document.getElementById('u-fullname').value.trim(),
+    role: document.getElementById('u-role').value,
+    sitio: document.getElementById('u-sitio').value,
+  };
+  try{
+    const u = await api('/api/users', {method:'POST', body:payload});
+    closeModal();
+    toast(`User ${u.full_name} created`, 'ok');
+    showView('users');
+  }catch(e){ toast(e.message, 'err'); }
+}
+
+/* ============================================================
+   SEARCH
+============================================================ */
+function handleSearch(v){
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(()=>{
+    searchTerm = v.trim();
+    if(['mine','all','approvals'].includes(activeView)) showView(activeView);
+  }, 300);
+}
+
+/* ============================================================
+   MODAL / TOAST
+============================================================ */
+function openModal(html){
+  document.getElementById('modal-box').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('active');
+}
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('active'); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+function toast(msg, type='ok'){
+  const stack = document.getElementById('toast-stack');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span class="tdot"></span><span>${msg}</span>`;
+  stack.appendChild(el);
+  setTimeout(()=>{ el.style.animation = 'toast-out .25s ease forwards'; setTimeout(()=>el.remove(), 260); }, 3200);
+}
+</script>
+</body>
+</html>
